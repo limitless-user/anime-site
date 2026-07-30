@@ -139,6 +139,12 @@
       margin-top: 2px;
     }
 
+    .nav-right-controls {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
     .nav-links {
       display: flex;
       gap: 32px;
@@ -174,6 +180,35 @@
       height: 2px;
       background: linear-gradient(90deg, var(--comet-blue), var(--sunset-pink));
       border-radius: 2px;
+    }
+
+    /* Ambient Audio Toggle Button */
+    .audio-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      letter-spacing: 1.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(12px);
+      transition: all 0.3s ease;
+    }
+
+    .audio-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--comet-blue);
+      box-shadow: 0 0 12px rgba(114, 239, 221, 0.3);
+    }
+
+    .audio-btn.playing {
+      border-color: var(--comet-blue);
+      color: var(--comet-blue);
+      box-shadow: 0 0 15px rgba(114, 239, 221, 0.25);
     }
 
     /* ==========================================================
@@ -342,6 +377,7 @@
       .on-image-grid { grid-template-columns: 1fr; gap: 30px; }
       .showcase-title { font-size: 2.3rem; }
       body { overflow-y: auto; height: auto; }
+      .nav-right-controls { flex-direction: column-reverse; gap: 10px; }
     }
   </style>
 </head>
@@ -368,11 +404,20 @@
         <span class="jp-title">君の名は。</span>
         <span class="en-title">Your Name.</span>
       </div>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="story.html" class="active">Story</a>
-        <a href="characters.html">Characters</a>
-      </nav>
+
+      <div class="nav-right-controls">
+        <nav class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="story.html" class="active">Story</a>
+          <a href="characters.html">Characters</a>
+        </nav>
+
+        <!-- Audio Toggle Control -->
+        <button id="audio-toggle" class="audio-btn">
+          <span class="audio-icon">🎵</span>
+          <span class="audio-text">Sparkle</span>
+        </button>
+      </div>
     </header>
 
     <!-- Story Main Section -->
@@ -423,9 +468,56 @@
 
   </div>
 
+  <!-- Background Audio Element -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="sparkel.mp3" type="audio/mpeg">
+  </audio>
+
   <!-- JavaScript Engine -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      /* ==========================================================
+         0. AMBIENT AUDIO ENGINE (Sparkle)
+         ========================================================== */
+      const audio = document.getElementById('bg-music');
+      const audioBtn = document.getElementById('audio-toggle');
+      const audioText = audioBtn.querySelector('.audio-text');
+
+      function toggleAudio() {
+        if (audio.paused) {
+          audio.play().then(() => {
+            audioBtn.classList.add('playing');
+            audioText.textContent = 'Sparkle (Playing)';
+          }).catch(err => console.log('Playback error:', err));
+        } else {
+          audio.pause();
+          audioBtn.classList.remove('playing');
+          audioText.textContent = 'Sparkle';
+        }
+      }
+
+      audioBtn.addEventListener('click', toggleAudio);
+
+      // Attempt initial soft autoplay
+      audio.play().then(() => {
+        audioBtn.classList.add('playing');
+        audioText.textContent = 'Sparkle (Playing)';
+      }).catch(() => {
+        // Handle standard browser autoplay policy quietly
+      });
+
+      // First user interaction auto-start handler
+      const enableAudioOnInteraction = () => {
+        if (audio.paused) {
+          audio.play().then(() => {
+            audioBtn.classList.add('playing');
+            audioText.textContent = 'Sparkle (Playing)';
+          }).catch(() => {});
+        }
+        document.removeEventListener('click', enableAudioOnInteraction);
+      };
+      document.addEventListener('click', enableAudioOnInteraction, { once: true });
+
       /* ==========================================================
          1. TYPEWRITER ANIMATION ENGINE
          ========================================================== */
