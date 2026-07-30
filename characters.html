@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
+  <meta name="google" content="notranslate">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>登場人物 | Characters - Your Name.</title>
@@ -40,6 +41,51 @@
       font-family: var(--font-main);
       color: #ffffff;
       user-select: none;
+    }
+
+    /* Start Overlay to satisfy Browser Autoplay Policy */
+    #audio-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(11, 13, 25, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    #audio-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .overlay-title {
+      font-family: var(--font-jp-hero);
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: 6px;
+      color: #ffffff;
+      margin-bottom: 12px;
+      text-shadow: 0 0 20px rgba(162, 210, 255, 0.6);
+    }
+
+    .overlay-subtitle {
+      font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+      letter-spacing: 4px;
+      color: var(--comet-blue);
+      text-transform: uppercase;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.03); }
     }
 
     /* Dynamic Background Layers */
@@ -380,6 +426,12 @@
 </head>
 <body>
 
+  <!-- Instant Entrance Overlay -->
+  <div id="audio-overlay">
+    <h1 class="overlay-title">君の名は。</h1>
+    <p class="overlay-subtitle">Click anywhere to enter</p>
+  </div>
+
   <!-- Dynamic Background Container -->
   <div class="dynamic-bg-wrapper">
     <div class="bg-image-layer active" id="bg-layer-1" style="background-image: url('TAKI TACHIBANA.jpg');"></div>
@@ -431,21 +483,21 @@
           </div>
         </div>
 
-<!-- Character 2 -->
-<div class="accordion-card" 
-     data-index="1"
-     data-jp="宮水 三葉" 
-     data-en="MITSUHA MIYAMIZU" 
-     data-role="ITOMORI TOWN GIRL"
-     data-img="Mitsuha Miyamizu.jpg">
-  <img src="Mitsuha Miyamizu.jpg" alt="Mitsuha Miyamizu" class="char-img">
-  <div class="card-title-overlay"><span>宮水 三葉</span></div>
-  <div class="card-active-details">
-    <span class="card-role-tag">ITOMORI TOWN GIRL</span>
-    <h2 class="card-jp-title">宮水 三葉</h2>
-    <h3 class="card-en-sub">MITSUHA MIYAMIZU</h3>
-  </div>
-</div>
+        <!-- Character 2 -->
+        <div class="accordion-card" 
+             data-index="1"
+             data-jp="宮水 三葉" 
+             data-en="MITSUHA MIYAMIZU" 
+             data-role="ITOMORI TOWN GIRL"
+             data-img="MITSUHA MIYAMIZU.jpg">
+          <img src="MITSUHA MIYAMIZU.jpg" alt="Mitsuha Miyamizu" class="char-img">
+          <div class="card-title-overlay"><span>宮水 三葉</span></div>
+          <div class="card-active-details">
+            <span class="card-role-tag">ITOMORI TOWN GIRL</span>
+            <h2 class="card-jp-title">宮水 三葉</h2>
+            <h3 class="card-en-sub">MITSUHA MIYAMIZU</h3>
+          </div>
+        </div>
 
         <!-- Character 3 -->
         <div class="accordion-card" 
@@ -501,15 +553,40 @@
 
   </div>
 
+  <!-- Background Audio Element -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="ThemeSong.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
   <!-- JavaScript Engine -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const cards = document.querySelectorAll('.accordion-card');
       const bgLayer1 = document.getElementById('bg-layer-1');
       const bgLayer2 = document.getElementById('bg-layer-2');
+      const audio = document.getElementById('bg-music');
+      const overlay = document.getElementById('audio-overlay');
 
       let currentIndex = 0;
       let activeBgLayer = 1;
+
+      // Unlocks Audio On First User Click / Tap
+      function startExperience() {
+        if (audio) {
+          audio.play().catch(err => console.log('Autoplay error:', err));
+        }
+        overlay.classList.add('hidden');
+      }
+
+      overlay.addEventListener('click', startExperience);
+
+      // Fallback try for browsers that allow true autoplay without restrictions
+      audio.play().then(() => {
+        overlay.classList.add('hidden');
+      }).catch(() => {
+        // Overlay stays visible until clicked
+      });
 
       // Card Switcher
       function updateCard(index) {
