@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="google" content="notranslate">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>登場人物 | Characters - Your Name.</title>
@@ -12,15 +11,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;600;700&family=Shippori+Mincho:wght@400;600;800&display=swap" rel="stylesheet">
 
   <style>
-    /* ==========================================================
-       1. GLOBAL & RESET STYLES
-       ========================================================== */
     :root {
       --twilight-purple: #1a162b;
       --comet-mist: #a2d2ff;
       --comet-blue: #72efdd;
       --sunset-pink: #ff758c;
-      --sunset-warmth: #ff7e5f;
       --font-main: 'Inter', sans-serif;
       --font-jp: 'Noto Serif JP', serif;
       --font-jp-hero: 'Shippori Mincho', serif;
@@ -40,55 +35,10 @@
       background-color: #0b0d19;
       font-family: var(--font-main);
       color: #ffffff;
-      user-select: none;
+      user-select: text;
     }
 
-    /* Start Overlay to satisfy Browser Autoplay Policy */
-    #audio-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: rgba(11, 13, 25, 0.92);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
-    }
-
-    #audio-overlay.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .overlay-title {
-      font-family: var(--font-jp-hero);
-      font-size: clamp(2rem, 5vw, 4rem);
-      font-weight: 800;
-      letter-spacing: 6px;
-      color: #ffffff;
-      margin-bottom: 12px;
-      text-shadow: 0 0 20px rgba(162, 210, 255, 0.6);
-    }
-
-    .overlay-subtitle {
-      font-size: clamp(0.8rem, 1.5vw, 1.1rem);
-      letter-spacing: 4px;
-      color: var(--comet-blue);
-      text-transform: uppercase;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.5; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.03); }
-    }
-
-    /* Dynamic Background Layers */
+    /* Ambient Background Layers */
     .dynamic-bg-wrapper {
       position: fixed;
       top: 0;
@@ -112,7 +62,6 @@
       opacity: 1;
     }
 
-    /* Ambient Twilight Shinkai Overlay */
     .shinkai-overlay {
       position: absolute;
       inset: 0;
@@ -122,37 +71,6 @@
       pointer-events: none;
     }
 
-    /* Makoto Shinkai Anamorphic Lens Flare Effect */
-    .shinkai-overlay::after {
-      content: '';
-      position: absolute;
-      top: 15%;
-      left: -20%;
-      width: 140%;
-      height: 120px;
-      background: linear-gradient(
-        90deg, 
-        transparent 0%, 
-        rgba(162, 210, 255, 0.05) 20%, 
-        rgba(255, 126, 95, 0.25) 45%, 
-        rgba(255, 255, 255, 0.5) 50%, 
-        rgba(255, 126, 95, 0.25) 55%, 
-        rgba(162, 210, 255, 0.05) 80%, 
-        transparent 100%
-      );
-      transform: rotate(-12deg);
-      pointer-events: none;
-      filter: blur(8px);
-      mix-blend-mode: screen;
-      animation: flarePulse 8s ease-in-out infinite alternate;
-    }
-
-    @keyframes flarePulse {
-      0% { opacity: 0.4; transform: rotate(-12deg) translateY(0); }
-      100% { opacity: 0.8; transform: rotate(-10deg) translateY(-20px); }
-    }
-
-    /* Kanji Sky Watermark */
     .shinkai-watermark {
       position: fixed;
       right: 4vw;
@@ -167,7 +85,6 @@
       z-index: 1;
     }
 
-    /* Canvas Particle Layer */
     #comet-canvas {
       position: fixed;
       top: 0;
@@ -178,9 +95,7 @@
       z-index: 2;
     }
 
-    /* ==========================================================
-       2. UI WRAPPER & NAVBAR
-       ========================================================== */
+    /* UI Layout */
     .ui-wrapper {
       position: relative;
       z-index: 4;
@@ -214,7 +129,6 @@
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 12px rgba(162, 210, 255, 0.4));
     }
 
     .en-title {
@@ -225,7 +139,6 @@
       margin-top: 2px;
     }
 
-    /* Styled Pill Navigation Bar */
     .nav-links {
       display: flex;
       gap: clamp(12px, 2.5vw, 32px);
@@ -234,50 +147,33 @@
       border-radius: 40px;
       border: 1px solid rgba(255, 255, 255, 0.12);
       backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
     }
 
     .nav-links a {
-      color: rgba(255, 255, 255, 0.7);
+      color: rgba(255, 255, 255, 0.85);
       text-decoration: none;
       font-size: clamp(0.75rem, 1.2vw, 0.88rem);
       font-weight: 500;
       letter-spacing: 1.5px;
       transition: all 0.3s ease;
-      position: relative;
       padding: 2px 4px;
     }
 
     .nav-links a:hover,
     .nav-links a.active {
       color: #ffffff;
-      text-shadow: 0 0 10px #72efdd, 0 0 20px rgba(114, 239, 221, 0.6);
+      text-shadow: 0 0 10px #72efdd;
     }
 
-    .nav-links a.active::after {
-      content: '';
-      position: absolute;
-      bottom: -6px;
-      left: 0;
-      width: 100%;
-      height: 2.5px;
-      background: linear-gradient(90deg, #72efdd 0%, #ff758c 100%);
-      border-radius: 2px;
-      box-shadow: 0 0 8px #72efdd;
-    }
-
-    /* ==========================================================
-       3. CHARACTER CARDS ACCORDION
-       ========================================================== */
+    /* Accordion Gallery */
     .character-gallery-section {
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
       width: 100%;
       max-width: 1200px;
-      margin: 0 auto;
+      margin: 20px auto 0;
       padding-bottom: 20px;
-      margin-top: 20px;
     }
 
     .accordion-container {
@@ -298,24 +194,18 @@
       cursor: pointer;
       border: 1px solid rgba(255, 255, 255, 0.15);
       background-color: var(--twilight-purple);
-      filter: grayscale(85%) opacity(0.55);
-      transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+      filter: grayscale(70%) opacity(0.7);
+      transition: flex 0.5s cubic-bezier(0.25, 1, 0.5, 1),
                   height 0.5s cubic-bezier(0.25, 1, 0.5, 1),
-                  filter 0.5s ease,
-                  border-color 0.4s ease,
-                  box-shadow 0.4s ease;
-      will-change: transform, flex;
+                  filter 0.4s ease;
     }
 
     .accordion-card.active {
       flex: 4;
       height: clamp(350px, 52vh, 500px);
-      filter: grayscale(0%) opacity(1) contrast(1.05) saturate(1.15);
+      filter: grayscale(0%) opacity(1);
       border-color: rgba(247, 209, 186, 0.8);
-      box-shadow: 
-        0 20px 50px rgba(0, 0, 0, 0.8),
-        0 0 30px rgba(255, 126, 95, 0.35),
-        0 0 60px rgba(162, 210, 255, 0.25);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
     }
 
     .char-img {
@@ -325,7 +215,6 @@
       object-position: center 20%;
     }
 
-    /* Vertical Title Overlay for Inactive Cards */
     .card-title-overlay {
       position: absolute;
       inset: 0;
@@ -342,14 +231,13 @@
       font-weight: 600;
       writing-mode: vertical-rl;
       letter-spacing: 4px;
-      color: rgba(255, 255, 255, 0.85);
+      color: rgba(255, 255, 255, 0.95);
     }
 
     .accordion-card.active .card-title-overlay {
       opacity: 0;
     }
 
-    /* Minimal In-Card Info Overlay for Active Card */
     .card-active-details {
       position: absolute;
       bottom: 0;
@@ -360,7 +248,7 @@
       z-index: 5;
       opacity: 0;
       transform: translateY(15px);
-      transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
+      transition: opacity 0.4s ease 0.15s, transform 0.4s ease 0.15s;
       pointer-events: none;
     }
 
@@ -380,7 +268,6 @@
       border: 1px solid #e88d8d;
       color: #f7d1ba;
       margin-bottom: 8px;
-      text-transform: uppercase;
     }
 
     .card-jp-title {
@@ -388,8 +275,6 @@
       font-size: clamp(1.4rem, 3.5vw, 2.2rem);
       font-weight: 800;
       color: #ffffff;
-      margin-bottom: 2px;
-      text-shadow: 0 0 15px rgba(162, 210, 255, 0.5);
     }
 
     .card-en-sub {
@@ -397,60 +282,31 @@
       letter-spacing: 3px;
       color: var(--comet-mist);
       font-weight: 600;
-      text-transform: uppercase;
     }
 
-    /* Responsive Adjustments */
     @media (max-width: 768px) {
-      .navbar {
-        justify-content: center;
-        flex-direction: column;
-      }
-      .accordion-container {
-        flex-direction: column;
-        height: auto;
-      }
-      .accordion-card {
-        width: 100%;
-        height: 80px;
-      }
-      .accordion-card.active {
-        width: 100%;
-        height: 280px;
-      }
-      .card-title-overlay span {
-        writing-mode: horizontal-tb;
-      }
+      .navbar { flex-direction: column; }
+      .accordion-container { flex-direction: column; height: auto; }
+      .accordion-card { width: 100%; height: 80px; }
+      .accordion-card.active { width: 100%; height: 280px; }
+      .card-title-overlay span { writing-mode: horizontal-tb; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Instant Entrance Overlay -->
-  <div id="audio-overlay">
-    <h1 class="overlay-title">君の名は。</h1>
-    <p class="overlay-subtitle">Click anywhere to enter</p>
-  </div>
-
-  <!-- Dynamic Background Container -->
   <div class="dynamic-bg-wrapper">
     <div class="bg-image-layer active" id="bg-layer-1" style="background-image: url('TAKI TACHIBANA.jpg');"></div>
     <div class="bg-image-layer" id="bg-layer-2"></div>
     <div class="shinkai-overlay"></div>
   </div>
 
-  <!-- Background Kanji Sky Watermark -->
   <div class="shinkai-watermark">黄昏時</div>
-
-  <!-- Ambient Shinkai Comet Particles Canvas -->
   <canvas id="comet-canvas"></canvas>
 
-  <!-- UI Wrapper -->
   <div class="ui-wrapper">
-    
-    <!-- Top Navigation Bar -->
     <header class="navbar">
-      <div class="logo" id="nav-logo">
+      <div class="logo">
         <span class="jp-title">君の名は。</span>
         <span class="en-title">Your Name.</span>
       </div>
@@ -461,19 +317,10 @@
       </nav>
     </header>
 
-    <!-- Main Character Gallery -->
     <main class="character-gallery-section">
-
-      <!-- Accordion Container -->
       <div class="accordion-container" id="accordion-container">
 
-        <!-- Character 1 -->
-        <div class="accordion-card active" 
-             data-index="0"
-             data-jp="立花 瀧" 
-             data-en="TAKI TACHIBANA" 
-             data-role="TOKYO HIGH SCHOOLER"
-             data-img="TAKI TACHIBANA.jpg">
+        <div class="accordion-card active" data-index="0" data-img="TAKI TACHIBANA.jpg" tabindex="0" role="button" aria-label="Taki Tachibana">
           <img src="TAKI TACHIBANA.jpg" alt="Taki Tachibana" class="char-img">
           <div class="card-title-overlay"><span>立花 瀧</span></div>
           <div class="card-active-details">
@@ -483,29 +330,17 @@
           </div>
         </div>
 
-       <!-- Character 2: Mitsuha Miyamizu -->
-<div class="accordion-card" 
-     data-index="1"
-     data-jp="宮水 三葉" 
-     data-en="MITSUHA MIYAMIZU" 
-     data-role="ITOMORI TOWN GIRL"
-     data-img="Mitsuha Miyamizu.jpg"> <!-- Updated case here -->
-  <img src="Mitsuha Miyamizu.jpg" alt="Mitsuha Miyamizu" class="char-img"> <!-- Updated case here -->
-  <div class="card-title-overlay"><span>宮水 三葉</span></div>
-  <div class="card-active-details">
-    <span class="card-role-tag">ITOMORI TOWN GIRL</span>
-    <h2 class="card-jp-title">宮水 三葉</h2>
-    <h3 class="card-en-sub">MITSUHA MIYAMIZU</h3>
-  </div>
-</div>
+        <div class="accordion-card" data-index="1" data-img="MITSUHA MIYAMIZU.jpg" tabindex="0" role="button" aria-label="Mitsuha Miyamizu">
+          <img src="MITSUHA MIYAMIZU.jpg" alt="Mitsuha Miyamizu" class="char-img">
+          <div class="card-title-overlay"><span>宮水 三葉</span></div>
+          <div class="card-active-details">
+            <span class="card-role-tag">ITOMORI TOWN GIRL</span>
+            <h2 class="card-jp-title">宮水 三葉</h2>
+            <h3 class="card-en-sub">MITSUHA MIYAMIZU</h3>
+          </div>
+        </div>
 
-        <!-- Character 3 -->
-        <div class="accordion-card" 
-             data-index="2"
-             data-jp="奥寺 ミキ" 
-             data-en="MIKI OKUDERA" 
-             data-role="RESTAURANT COWORKER"
-             data-img="MIKI OKUDERA.jpg">
+        <div class="accordion-card" data-index="2" data-img="MIKI OKUDERA.jpg" tabindex="0" role="button" aria-label="Miki Okudera">
           <img src="MIKI OKUDERA.jpg" alt="Miki Okudera" class="char-img">
           <div class="card-title-overlay"><span>奥寺 ミキ</span></div>
           <div class="card-active-details">
@@ -515,13 +350,7 @@
           </div>
         </div>
 
-        <!-- Character 4 -->
-        <div class="accordion-card" 
-             data-index="3"
-             data-jp="勅使河原 克彦" 
-             data-en="KATSUHIKO TESHIGAWARA" 
-             data-role="MITSUHA'S CLASSMATE"
-             data-img="KATSUHIKO TESHIGAWARA.jpg">
+        <div class="accordion-card" data-index="3" data-img="KATSUHIKO TESHIGAWARA.jpg" tabindex="0" role="button" aria-label="Katsuhiko Teshigawara">
           <img src="KATSUHIKO TESHIGAWARA.jpg" alt="Katsuhiko Teshigawara" class="char-img">
           <div class="card-title-overlay"><span>勅使河原 克彦</span></div>
           <div class="card-active-details">
@@ -531,13 +360,7 @@
           </div>
         </div>
 
-        <!-- Character 5 -->
-        <div class="accordion-card" 
-             data-index="4"
-             data-jp="名取 早耶香" 
-             data-en="SAYAKA NATORI" 
-             data-role="BROADCASTING CLUB"
-             data-img="SAYAKA NATORI.jpg">
+        <div class="accordion-card" data-index="4" data-img="SAYAKA NATORI.jpg" tabindex="0" role="button" aria-label="Sayaka Natori">
           <img src="SAYAKA NATORI.jpg" alt="Sayaka Natori" class="char-img">
           <div class="card-title-overlay"><span>名取 早耶香</span></div>
           <div class="card-active-details">
@@ -548,47 +371,49 @@
         </div>
 
       </div>
-
     </main>
-
   </div>
 
-  <!-- Background Audio Element -->
-  <audio id="bg-music" loop preload="auto">
+  <!-- Audio Element with Autoplay -->
+  <audio id="bg-music" autoplay loop preload="auto">
     <source src="ThemeSong.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
   </audio>
 
-  <!-- JavaScript Engine -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const cards = document.querySelectorAll('.accordion-card');
       const bgLayer1 = document.getElementById('bg-layer-1');
       const bgLayer2 = document.getElementById('bg-layer-2');
       const audio = document.getElementById('bg-music');
-      const overlay = document.getElementById('audio-overlay');
 
       let currentIndex = 0;
       let activeBgLayer = 1;
 
-      // Unlocks Audio On First User Click / Tap
-      function startExperience() {
-        if (audio) {
-          audio.play().catch(err => console.log('Autoplay error:', err));
-        }
-        overlay.classList.add('hidden');
+      // Attempt immediate autoplay on entry
+      const playAudio = () => {
+        audio.play().then(() => {
+          removeListeners();
+        }).catch(err => {
+          // Silent fallback if browser blocks initial autoplay
+        });
+      };
+
+      const startOnInteraction = () => {
+        playAudio();
+      };
+
+      function removeListeners() {
+        window.removeEventListener('click', startOnInteraction);
+        window.removeEventListener('touchstart', startOnInteraction);
+        window.removeEventListener('keydown', startOnInteraction);
       }
 
-      overlay.addEventListener('click', startExperience);
+      window.addEventListener('click', startOnInteraction);
+      window.addEventListener('touchstart', startOnInteraction);
+      window.addEventListener('keydown', startOnInteraction);
 
-      // Fallback try for browsers that allow true autoplay without restrictions
-      audio.play().then(() => {
-        overlay.classList.add('hidden');
-      }).catch(() => {
-        // Overlay stays visible until clicked
-      });
+      playAudio();
 
-      // Card Switcher
       function updateCard(index) {
         if (index === currentIndex && cards[index].classList.contains('active')) return;
 
@@ -597,7 +422,6 @@
         activeCard.classList.add('active');
         currentIndex = index;
 
-        // Background Image Crossfade Transition
         const imgSrc = activeCard.dataset.img;
         const nextLayer = activeBgLayer === 1 ? bgLayer2 : bgLayer1;
         const currentLayer = activeBgLayer === 1 ? bgLayer1 : bgLayer2;
@@ -608,33 +432,22 @@
         activeBgLayer = activeBgLayer === 1 ? 2 : 1;
       }
 
-      // Add Card Interaction Listeners
       cards.forEach((card, idx) => {
         card.addEventListener('click', () => updateCard(idx));
-
-        // 3D Parallax Tilt Effect on Active Card Hover
-        card.addEventListener('mousemove', (e) => {
-          if (!card.classList.contains('active')) return;
-          const rect = card.getBoundingClientRect();
-          const x = e.clientX - rect.left - rect.width / 2;
-          const y = e.clientY - rect.top - rect.height / 2;
-          const rotateX = (-y / rect.height) * 8;
-          const rotateY = (x / rect.width) * 8;
-          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        });
-
-        card.addEventListener('mouseleave', () => {
-          card.style.transform = '';
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            updateCard(idx);
+          }
         });
       });
 
-      // Keyboard Controls (Left / Right Arrows)
       document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight') updateCard((currentIndex + 1) % cards.length);
         if (e.key === 'ArrowLeft') updateCard((currentIndex - 1 + cards.length) % cards.length);
       });
 
-      /* Shinkai Comet/Dust Particle System */
+      // Particle Canvas
       const canvas = document.getElementById('comet-canvas');
       const ctx = canvas.getContext('2d');
 
@@ -645,7 +458,7 @@
       resizeCanvas();
       window.addEventListener('resize', resizeCanvas);
 
-      const particles = Array.from({ length: 45 }, () => ({
+      const particles = Array.from({ length: 35 }, () => ({
         x: Math.random() * window.innerWidth,
         y: Math.random() * window.innerHeight,
         radius: Math.random() * 2 + 0.5,
@@ -658,12 +471,10 @@
 
       function renderParticles() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
         particles.forEach(p => {
           p.x += p.speedX;
           p.y += p.speedY;
           p.alpha += p.fadeSpeed;
-
           if (p.alpha >= 1 || p.alpha <= 0.1) p.fadeSpeed = -p.fadeSpeed;
           if (p.x > canvas.width) p.x = 0;
 
@@ -671,11 +482,8 @@
           ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
           ctx.fillStyle = p.color;
           ctx.globalAlpha = Math.abs(p.alpha);
-          ctx.shadowBlur = 8;
-          ctx.shadowColor = p.color;
           ctx.fill();
         });
-
         requestAnimationFrame(renderParticles);
       }
       renderParticles();
